@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:fiestapp/screens/signin.dart';
+import 'package:fiestapp/theme/style.dart';
+import 'package:fiestapp/route_generator.dart';
 
-void main() => runApp(
-  MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: SignInPage(),
-  )
-);
+void main() => runApp(FiestApp());
+
+class FiestApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context){
+    return MaterialApp(
+      title: 'FiestApp',
+      theme: appTheme(),
+      debugShowCheckedModeBanner: false,
+      initialRoute: '/',
+      onGenerateRoute: RouteGenerator.generateRoute,
+    );
+  }
+}

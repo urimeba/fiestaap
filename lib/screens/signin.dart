@@ -11,11 +11,11 @@ class SignInPage extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Container(
-              height: 400,
+              height: 350,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage('assets/img/1.png'),
-                  fit: BoxFit.fill
+                  fit: BoxFit.cover
                 )
               ),
               child: Stack(
@@ -44,7 +44,7 @@ class SignInPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: [
                         BoxShadow(
-                          color: Color.fromRGBO(148, 148, 251, .2),
+                          color: Color.fromRGBO(5, 20, 79, .2),
                           blurRadius: 20.0,
                           offset: Offset(0, 10)
                         )
@@ -61,17 +61,18 @@ class SignInPage extends StatelessWidget {
                             decoration: InputDecoration(
                               border: InputBorder.none,
                               hintText: "Correo",
-                              hintStyle: TextStyle(color: Colors.grey[480])
+                              hintStyle: TextStyle(color: Theme.of(context).hintColor)
                             ),
                           ),
                         ),
                         Container(
                           padding: EdgeInsets.all(8.0),
                           child: TextField(
+                            obscureText: true,
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Contraseña",
-                                hintStyle: TextStyle(color: Colors.grey[480])
+                                hintStyle: TextStyle(color: Theme.of(context).hintColor)
                             ),
                           ),
                         )
@@ -85,8 +86,8 @@ class SignInPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                       gradient: LinearGradient(
                         colors: [
-                          Color.fromRGBO(148, 148, 251, 1),
-                          Color.fromRGBO(148, 148, 251, .6),
+                          Theme.of(context).primaryColor,
+                          Theme.of(context).primaryColorLight,
                         ]
                       )
                     ),
@@ -98,9 +99,32 @@ class SignInPage extends StatelessWidget {
                     ),
                   )),
                   SizedBox(height: 70,),
-                  FadeAnimation(1.6, Text("Olvidé mi contraseña", style: TextStyle(
-                      color: Color.fromRGBO(148, 148, 251, 1),
-                  ))),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      Center(
+                        child: FlatButton(
+                          child: Container(
+                            child: FadeAnimation(1.6, Text("Olvidé mi contraseña", style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ))),
+                          ),
+                        ),
+                      ),
+                      Center(
+                        child: FlatButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/registro');
+                          },
+                          child: Container(
+                            child: FadeAnimation(1.6, Text("Crear cuenta", style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                            ))),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             )
