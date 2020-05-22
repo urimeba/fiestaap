@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 //Screens
-import 'package:fiestapp/screens/signin.dart';
-import 'package:fiestapp/screens/signup.dart';
+import 'package:fiestapp/screens/signin2.dart';
+import 'package:fiestapp/screens/signup2.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

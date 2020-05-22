@@ -33,7 +33,8 @@ class SignInPage extends StatelessWidget {
                             )),
                           ),
                         )),
-                      )]),
+                      )]
+                      ),
               ),
               Padding(
                 padding: EdgeInsets.all(30.0),
