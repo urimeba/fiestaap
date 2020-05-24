@@ -1,3 +1,5 @@
+import 'package:fiestapp/screens/authenticate/authenticate.dart';
+import 'package:fiestapp/screens/prueba.dart';
 import 'package:flutter/material.dart';
 //Screens
 import 'package:fiestapp/screens/signin2.dart';
@@ -9,7 +11,7 @@ class RouteGenerator {
 
     switch(settings.name) {
       case '/':
-        return MaterialPageRoute(builder: (_) => SignUpPage());
+        return MaterialPageRoute(builder: (_) => Authenticate());
       case '/registro':
         return MaterialPageRoute(builder: (_) => SignUpPage());
       default:

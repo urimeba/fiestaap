@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 
 
 class SignUpPage extends StatefulWidget {
+
+  final Function toggleView;
+  SignUpPage({this.toggleView});
+
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -167,7 +172,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                 setState(() => password2 = val);
                               },
                           ),
-                          SizedBox(height: 10),
+                          SizedBox(height: 5),
+                          Text(
+                              error,
+                              style: TextStyle(
+                                color: Colors.red, 
+                                fontSize: 14.0
+                                ),
+                          ),
+                          SizedBox(height: 5,),
                           RaisedButton(
                             color: Colors.pink[400],
                             onPressed: () async{
@@ -188,14 +201,14 @@ class _SignUpPageState extends State<SignUpPage> {
                               style: TextStyle(color: Colors.white),
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Text(
-                              error,
-                              style: TextStyle(
-                                color: Colors.red, 
-                                fontSize: 14.0
+                            SizedBox(height: 1),
+                            
+                            // SizedBox(height: 1),
+                            FlatButton.icon(
+                                onPressed: () => widget.toggleView(),
+                                icon: Icon(Icons.person), 
+                                label: Text('Ya tengo cuenta')
                                 ),
-                              )
                         ],
                       ),
                     ),

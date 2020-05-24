@@ -1,9 +1,13 @@
 import 'package:fiestapp/screens/loading.dart';
+import 'package:fiestapp/screens/signin.dart';
 import 'package:flutter/material.dart';
 
 
-
 class SignInPage extends StatefulWidget {
+
+  final Function toggleView;
+  SignInPage({this.toggleView});
+
   @override
   _SignInPageState createState() => _SignInPageState();
 }
@@ -17,7 +21,6 @@ class _SignInPageState extends State<SignInPage> {
   String email = "";
   String password = "";
   String error = "";
-
 
   @override
   Widget build(BuildContext context) {
@@ -140,10 +143,12 @@ class _SignInPageState extends State<SignInPage> {
 
                             SizedBox(height: 5),
                             FlatButton.icon(
-                                onPressed: null,
+                                onPressed: () => widget.toggleView(),
                                 icon: Icon(Icons.person), 
                                 label: Text('Register')
-                                )
+                                ),
+                           
+
                           ],
                         ),
                       ),
