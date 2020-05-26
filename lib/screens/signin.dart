@@ -112,6 +112,7 @@ class SignInPage extends StatelessWidget {
                                 color: Theme.of(context).primaryColor,
                               ))),
                             ),
+                            onPressed: null,
                           ),
                         ),
                         Center(

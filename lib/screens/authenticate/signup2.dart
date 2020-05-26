@@ -1,12 +1,12 @@
+import 'package:fiestapp/shared/loading.dart';
+import 'package:fiestapp/shared/constants.dart';
+import 'package:fiestapp/services/auth.dart';
 import 'package:flutter/material.dart';
-
-
 
 class SignUpPage extends StatefulWidget {
 
   final Function toggleView;
   SignUpPage({this.toggleView});
-
 
   @override
   _SignUpPageState createState() => _SignUpPageState();
@@ -14,6 +14,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> {
 
+  final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
@@ -26,7 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -63,41 +64,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
                 child: Column(
                   children: <Widget>[
-                    // Container(
-                    //   padding: EdgeInsets.all(5),
-                    //   decoration: BoxDecoration(
-                    //     color: Colors.white,
-                    //     borderRadius: BorderRadius.circular(10),
-                    //     boxShadow: [
-                    //       BoxShadow(
-                    //         color: Color.fromRGBO(5, 20, 79, .2),
-                    //         blurRadius: 20.0,
-                    //         offset: Offset(0, 10)
-                    //         )]
-                    //   ),
-                    // ),
                     Form(
                       key: _formKey,
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: 10),
                           TextFormField(
-                            decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                enabledBorder: OutlineInputBorder( 
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300],
-                                    width: 2
-                                    )
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue, 
-                                    width: 2
-                                    ),
-                                )
-                              ).copyWith(hintText: 'Nombre'),
+                            decoration: textInputDecoration.copyWith(hintText: 'Nombre'),
                               validator: (val) => val.isEmpty ? 'Ingresa tu nombre' : null ,
                               onChanged: (val){
                                 setState(() => name = val);
@@ -105,22 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           SizedBox(height: 20),
                           TextFormField(
-                            decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                enabledBorder: OutlineInputBorder( 
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300],
-                                    width: 2
-                                    )
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue, 
-                                    width: 2
-                                    ),
-                                )
-                              ).copyWith(hintText: 'Email'),
+                            decoration: textInputDecoration.copyWith(hintText: 'Email'),
                               validator: (val) => val.isEmpty ? 'Ingresa un correo' : null ,
                               onChanged: (val){
                                 setState(() => email = val);
@@ -128,46 +86,18 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                           SizedBox(height: 20),
                           TextFormField(
-                            decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                enabledBorder: OutlineInputBorder( 
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300],
-                                    width: 2
-                                    )
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue, 
-                                    width: 2
-                                    ),
-                                )
-                              ).copyWith(hintText: 'Contraseña'),
+                            decoration: textInputDecoration.copyWith(hintText: 'Contraseña'),
                               validator: (val) => val.length < 6  ? 'Ingresa una contraseña de +6 caracteres' : null ,
+                              obscureText: true,
                               onChanged: (val){
                                 setState(() => password = val);
                               },
                           ),
                           SizedBox(height: 20),
                           TextFormField(
-                            decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                enabledBorder: OutlineInputBorder( 
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300],
-                                    width: 2
-                                    )
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue, 
-                                    width: 2
-                                    ),
-                                )
-                              ).copyWith(hintText: 'Confirmar contraseña'),
+                            decoration: textInputDecoration.copyWith(hintText: 'Confirmar contraseña'),
                               validator: (val) => val.length < 6  ? 'Ingresa una contraseña de +6 caracteres' : null ,
+                              obscureText: true,
                               onChanged: (val){
                                 setState(() => password2 = val);
                               },
@@ -185,15 +115,33 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Colors.pink[400],
                             onPressed: () async{
                               if(_formKey.currentState.validate()){
-                                print(name);
-                                print(email);
-                                print(password);
-                                print(password2);
-                              }else{
-                                setState(() {
-                                  error = 'Error al registrarse';
-                                  loading = false;
-                                });
+
+                                if(password==password2){
+                                  setState(() => loading = true);
+
+                                  dynamic result = await _auth.registerWithEmailAndPassword(email, password, name);
+                                  print(result);
+                                  if(result==null){
+                                    setState((){
+                                      error = 'Por favor, ingresa un correo válido';
+                                      loading = false;
+                                      }
+                                    );
+                                  }
+
+                                }else{
+                                  setState(() {
+                                    error = 'Las contraseñas no coinciden';
+                                    loading = false;
+                                  });
+                                  
+                                }
+
+
+
+                                
+
+                                
                               }
                             },
                             child: Text(

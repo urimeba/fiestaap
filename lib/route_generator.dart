@@ -1,13 +1,12 @@
 import 'package:fiestapp/screens/authenticate/authenticate.dart';
-import 'package:fiestapp/screens/prueba.dart';
+import 'package:fiestapp/screens/authenticate/signin2.dart';
+import 'package:fiestapp/screens/authenticate/signup2.dart';
 import 'package:flutter/material.dart';
 //Screens
-import 'package:fiestapp/screens/signin2.dart';
-import 'package:fiestapp/screens/signup2.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
-    final args = settings.arguments;
+    // final args = settings.arguments;
 
     switch(settings.name) {
       case '/':

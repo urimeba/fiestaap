@@ -1,19 +1,25 @@
-import 'package:fiestapp/screens/signin2.dart';
+import 'package:fiestapp/screens/wrapper.dart';
+import 'package:fiestapp/services/auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fiestapp/theme/style.dart';
-import 'package:fiestapp/route_generator.dart';
+import 'package:provider/provider.dart';
+import 'models/user.dart';
 
 void main() => runApp(FiestApp());
 
 class FiestApp extends StatelessWidget {
   @override
   Widget build(BuildContext context){
-    return MaterialApp(
-      title: 'FiestApp',
-      theme: appTheme(),
-      debugShowCheckedModeBanner: false,
-      initialRoute: '/',
-      onGenerateRoute: RouteGenerator.generateRoute,
+  //   return MaterialApp(
+  //     title: 'FiestApp',
+  //     theme: appTheme(),
+  //     debugShowCheckedModeBanner: false,
+  //     initialRoute: '/',
+  //     onGenerateRoute: RouteGenerator.generateRoute,
+  //   );
+  // }
+  return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: MaterialApp(home: Wrapper(),),
     );
   }
 }

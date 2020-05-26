@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "846078946097",
+    "firebase_url": "https://fiestapp-a1552.firebaseio.com",
+    "project_id": "fiestapp-a1552",
+    "storage_bucket": "fiestapp-a1552.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:846078946097:android:c38fd1c02e0a90f4c4de10",
+        "android_client_info": {
+          "package_name": "com.example.fiestapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "846078946097-g13ppq6qfdv1r8ul51tg2vfdt9mgkoso.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdIlQsaXybF67H6iHDCSA0k-qqlDC7ap8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "846078946097-g13ppq6qfdv1r8ul51tg2vfdt9mgkoso.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

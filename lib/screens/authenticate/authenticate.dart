@@ -1,5 +1,5 @@
-import 'package:fiestapp/screens/signin2.dart';
-import 'package:fiestapp/screens/signup2.dart';
+import 'package:fiestapp/screens/authenticate/signin2.dart';
+import 'package:fiestapp/screens/authenticate/signup2.dart';
 import 'package:flutter/material.dart';
 
 class Authenticate extends StatefulWidget {
@@ -10,7 +10,6 @@ class Authenticate extends StatefulWidget {
 class _AuthenticateState extends State<Authenticate> {
 
   bool showSignIn = true;
-
   void toggleView(){
     setState(() => showSignIn = !showSignIn );
   }

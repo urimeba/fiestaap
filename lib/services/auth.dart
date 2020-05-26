@@ -1,75 +1,75 @@
-// import 'package:brew_crew/models/user.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fiestapp/models/user.dart';
 
-// class AuthService {
+class AuthService {
 
-//   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  
+  // Getting the user data
+  Future getDataUser() async {
+    FirebaseUser user = await _auth.currentUser();
+
+    List<String> lista;
+    // print(user.displayName.toString());
+    // print(user.email.toString());
+
+    return user.displayName.toString();
+  } 
+
+  //Creating an user object based on FireBase User
+  User _userFromFirebaseUser(FirebaseUser user){
+    return user != null ? User(uid: user.uid) : null;
+  }
+
+  // Auth Change User stream
+  Stream<User> get user{
+    return _auth.onAuthStateChanged.map(_userFromFirebaseUser);
+  }
+
+  // sign in with emacil and password
+  Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print("ERROR");
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // register with email and password
+  Future registerWithEmailAndPassword(String email, String password, String name) async {
+    try {
+      AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+      FirebaseUser user = result.user;
+      updateUserInfo(name);
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print("ERRORRRROR");
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // Updating the user
+  void updateUserInfo(String name) async{
+    FirebaseUser user = await _auth.currentUser();
+    UserUpdateInfo userUpdateInfo = new UserUpdateInfo();
+    userUpdateInfo.displayName = name;
+    user.updateProfile(userUpdateInfo);
+  }
 
 
-//   //Creating an user object based on FireBase User
-//   User _userFromFirebaseUser(FirebaseUser user){
-//     return user != null ? User(uid: user.uid) : null;
-//   }
+  // sign out
+  Future signOut() async{
+    try {
+      return await _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
-
-//   // Auth Change User stream
-//   Stream<User> get user{
-//     return _auth.onAuthStateChanged
-//     // .map((FirebaseUser user) => _userFromFirebaseUser(user))
-//     .map(_userFromFirebaseUser);
-//   }
-
-
-//   // sign in anon
-//   Future signInAnon() async {
-//     try {
-//       AuthResult result = await _auth.signInAnonymously();
-//       FirebaseUser user = result.user;
-//       return _userFromFirebaseUser(user);
-//     } catch (e) {
-//       print(e.toString());
-//       return null;
-//     }
-//   }
-
-//   // sign in with email and password
-//   Future signInWithEmailAndPassword(String email, String password) async {
-//     try {
-//       AuthResult result = await _auth.signInWithEmailAndPassword(email: email, password: password);
-//       FirebaseUser user = result.user;
-//       return _userFromFirebaseUser(user);
-//     } catch (e) {
-//       print("ERRORRRROR");
-//       print(e.toString());
-//       return null;
-//     }
-
-//   }
-
-
-//   // register with email and password
-//   Future registerWithEmailAndPassword(String email, String password) async {
-//     try {
-//       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-//       FirebaseUser user = result.user;
-//       return _userFromFirebaseUser(user);
-//     } catch (e) {
-//       print("ERRORRRROR");
-//       print(e.toString());
-
-//       return null;
-//     }
-
-//   }
-
-//   // sign out
-//   Future signOut() async{
-//     try {
-//       return await _auth.signOut();
-//     } catch (e) {
-//       print(e.toString());
-//       return null;
-//     }
-//   }
-
-// }
+}

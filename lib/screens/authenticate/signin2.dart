@@ -1,7 +1,7 @@
-import 'package:fiestapp/screens/loading.dart';
-import 'package:fiestapp/screens/signin.dart';
+import 'package:fiestapp/shared/loading.dart';
+import 'package:fiestapp/shared/constants.dart';
+import 'package:fiestapp/services/auth.dart';
 import 'package:flutter/material.dart';
-
 
 class SignInPage extends StatefulWidget {
 
@@ -14,6 +14,7 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
 
+  final AuthService _auth = AuthService();
   bool loading = false;
   final _formKey = GlobalKey<FormState>();
 
@@ -24,7 +25,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       resizeToAvoidBottomPadding: false,
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.white,
@@ -69,38 +70,14 @@ class _SignInPageState extends State<SignInPage> {
                         child: Column(
                           children: <Widget>[
                             TextFormField(
-                              decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.grey[300], width: 2)
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.blue, width: 2)
-                                )
-                              ).copyWith(hintText: 'Email'),
+                              decoration: textInputDecoration.copyWith(hintText: 'Email'),
                               validator: (val) => val.isEmpty ? 'Ingresa tu correo' : null,
                               onChanged: (val){
                                 setState(() => email = val);
                               },
                             ),
                             TextFormField(
-                              decoration: InputDecoration(
-                                fillColor: Colors.white,
-                                filled: true,
-                                enabledBorder: OutlineInputBorder( 
-                                  borderSide: BorderSide(
-                                    color: Colors.grey[300],
-                                    width: 2
-                                    )
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Colors.blue, 
-                                    width: 2
-                                    ),
-                                )
-                              ).copyWith(hintText: 'Contraseña'),
+                              decoration: textInputDecoration.copyWith(hintText: 'Contraseña'),
                               validator: (val) => val.length < 6 ? 'Ingresa tu contraseña de +6 caracteres' : null,
                               obscureText: true,
                               onChanged: (val){
@@ -117,15 +94,15 @@ class _SignInPageState extends State<SignInPage> {
                               onPressed: () async{
 
                                 if(_formKey.currentState.validate()){
-                                  print(email);
-                                  print(password);
+                                  setState(() => loading = true);
+                                  dynamic result = await _auth.signInWithEmailAndPassword(email, password);
 
-
-                                }else{
+                                if(result==null){
                                   setState(() {
-                                    error='No se pudo logear';
-                                    loading=false;
+                                    error = 'Usuario o contraseña incorrectos';
+                                    loading = false;
                                   });
+                                }
                                 }
 
                                 
@@ -145,7 +122,7 @@ class _SignInPageState extends State<SignInPage> {
                             FlatButton.icon(
                                 onPressed: () => widget.toggleView(),
                                 icon: Icon(Icons.person), 
-                                label: Text('Register')
+                                label: Text('No tengo cuenta')
                                 ),
                            
 
