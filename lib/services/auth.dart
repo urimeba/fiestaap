@@ -6,14 +6,13 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   
   // Getting the user data
-  Future getDataUser() async {
+  getDataUser() async {
     FirebaseUser user = await _auth.currentUser();
 
-    List<String> lista;
-    // print(user.displayName.toString());
-    // print(user.email.toString());
-
-    return user.displayName.toString();
+    List<String> lista = List<String>();
+    lista.add(user.displayName.toString());
+    lista.add(user.email.toString());
+    return lista;
   } 
 
   //Creating an user object based on FireBase User
