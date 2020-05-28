@@ -1,6 +1,6 @@
 import 'package:fiestapp/models/user.dart';
 import 'package:fiestapp/screens/authenticate/authenticate.dart';
-import 'package:fiestapp/screens/home/prueba.dart';
+import 'package:fiestapp/screens/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
