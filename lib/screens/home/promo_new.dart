@@ -26,29 +26,42 @@ class _NewPromoState extends State<NewPromo> {
   // Form values
   String _descripcion;
   String _costo;
-  String _fechaInicio;
-  String _fechaVencimiento;
-  String _tienda;
+  String _tienda='Walmart';
   String error="";
-  DateTime _fechaInicio2 = DateTime.now();
-  DateTime now = DateTime.now();
-  
-  Future<Null> _selectDate(BuildContext context) async {
+  DateTime _fechaInicio = DateTime.now();
+  DateTime _fechaFinal = DateTime.now();
+
+  Future<Null> _selectFechaInicio(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
-        initialDate: _fechaInicio2,
+        initialDate: _fechaInicio,
         firstDate: DateTime(2015, 8),
-        lastDate: DateTime(2101));
-    if (picked != null && picked != _fechaInicio2)
+        lastDate: DateTime(2021));
+    if (picked != null && picked != _fechaInicio)
       setState(() {
-        _fechaInicio2 = picked;
-        now = picked;
+        _fechaInicio = picked;
       });
   }
 
+  Future<Null> _selectFechaFinal(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: _fechaFinal,
+        firstDate: _fechaInicio,
+        lastDate: DateTime(2021));
+    if (picked != null && picked != _fechaFinal)
+      setState(() {
+        _fechaFinal = picked;
+      });
+  }
+  
   @override
   Widget build(BuildContext context) {
-    String convertedDateTime="${now.day.toString().padLeft(2,'0')}/${now.month.toString().padLeft(2,'0')}/${now.year.toString()}";
+
+    String convertedFechaInicio="${_fechaInicio.day.toString().padLeft(2,'0')}/${_fechaInicio.month.toString().padLeft(2,'0')}/${_fechaInicio.year.toString()}";
+    String convertedFechaFinal="${_fechaFinal.day.toString().padLeft(2,'0')}/${_fechaFinal.month.toString().padLeft(2,'0')}/${_fechaFinal.year.toString()}";
+
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: 
@@ -70,7 +83,7 @@ class _NewPromoState extends State<NewPromo> {
                       SizedBox(height: 20),
                       DropdownButtonFormField<String>(
                         decoration: textInputDecoration.copyWith(hintText: 'Elige una tienda'),
-                        value: _tienda ?? 'Oxxo', 
+                        value: _tienda , 
                         items: stores.
                           map((store) => DropdownMenuItem(
                             child: Text('$store'),
@@ -87,24 +100,18 @@ class _NewPromoState extends State<NewPromo> {
                       ),
                       SizedBox(height: 10,),
 
-                      Text("$convertedDateTime"),
+                      Text("$convertedFechaInicio"),
                       RaisedButton(
-                        onPressed: () => _selectDate(context),
+                        onPressed: () => _selectFechaInicio(context),
                         child: Text('Selecciona la fecha de inicio'),
                       ),
 
+                      Text("$convertedFechaFinal"),
+                      RaisedButton(
+                        onPressed: () => _selectFechaFinal(context),
+                        child: Text('Selecciona la fecha de termino'),
+                      ),
 
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Inicio de promocion'),
-                        validator: (val) => val.length < 1 ? 'Ingresa la fecha de inicio' : null,
-                        onChanged: (val) => setState(() => _fechaInicio = val)
-                      ),
-                      SizedBox(height: 20,),
-                      TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Termino de promocion'),
-                        validator: (val) => val.length < 1 ? 'Ingresa la fecha de termino' : null,
-                        onChanged: (val) => setState(() => _fechaVencimiento = val)
-                      ),
                       Text(
                           error,
                           style: TextStyle(
@@ -118,20 +125,31 @@ class _NewPromoState extends State<NewPromo> {
                         color: Colors.pink[400],
                         child: Text('Agregar', style: TextStyle(color: Colors.white),),
                         onPressed: () async {
-                          
-                          if(_formKey.currentState.validate()){
 
-                          await databaseService.promosCollection
-                              .add({
-                                'costo': _costo,
-                                'descripcion': _descripcion,
-                                'estado': '1',
-                                'fechaInicio': convertedDateTime ,
-                                'fechaVencimiento': _fechaVencimiento,
-                                'tienda': _tienda,
+                          if(
+                              int.parse(_fechaInicio.day.toString().padLeft(2,'0'))>int.parse(_fechaFinal.day.toString().padLeft(2,'0')) ||
+                              int.parse(_fechaInicio.month.toString().padLeft(2,'0'))>int.parse(_fechaFinal.month.toString().padLeft(2,'0')) ||
+                              int.parse(_fechaInicio.year.toString())>int.parse(_fechaFinal.year.toString())
+                            ){
+                              setState(() {
+                                error="La fecha de termino NO puede ser mayor a la de inicio";
                               });
-                              Navigator.pop(context);
-                          }
+                            }else{
+                              if(_formKey.currentState.validate()){
+                                await databaseService.promosCollection
+                                  .add({
+                                    'costo': _costo,
+                                    'descripcion': _descripcion,
+                                    'estado': '1',
+                                    'fechaInicio': convertedFechaInicio.toString() ,
+                                    'fechaVencimiento': convertedFechaFinal.toString(),
+                                    'tienda': _tienda,
+                                  });
+                                  Navigator.pop(context);
+                              }
+                            }
+                          
+                          
                         }
                         ),
                     ],
