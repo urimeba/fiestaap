@@ -30,10 +30,25 @@ class _NewPromoState extends State<NewPromo> {
   String _fechaVencimiento;
   String _tienda;
   String error="";
-
+  DateTime _fechaInicio2 = DateTime.now();
+  DateTime now = DateTime.now();
+  
+  Future<Null> _selectDate(BuildContext context) async {
+    final DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: _fechaInicio2,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != _fechaInicio2)
+      setState(() {
+        _fechaInicio2 = picked;
+        now = picked;
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
+    String convertedDateTime="${now.day.toString().padLeft(2,'0')}/${now.month.toString().padLeft(2,'0')}/${now.year.toString()}";
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: 
@@ -71,6 +86,14 @@ class _NewPromoState extends State<NewPromo> {
                         onChanged: (val) => setState(() => _costo = val)
                       ),
                       SizedBox(height: 10,),
+
+                      Text("$convertedDateTime"),
+                      RaisedButton(
+                        onPressed: () => _selectDate(context),
+                        child: Text('Selecciona la fecha de inicio'),
+                      ),
+
+
                       TextFormField(
                         decoration: textInputDecoration.copyWith(hintText: 'Inicio de promocion'),
                         validator: (val) => val.length < 1 ? 'Ingresa la fecha de inicio' : null,
@@ -103,7 +126,7 @@ class _NewPromoState extends State<NewPromo> {
                                 'costo': _costo,
                                 'descripcion': _descripcion,
                                 'estado': '1',
-                                'fechaInicio': _fechaInicio ,
+                                'fechaInicio': convertedDateTime ,
                                 'fechaVencimiento': _fechaVencimiento,
                                 'tienda': _tienda,
                               });
