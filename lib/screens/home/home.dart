@@ -1,5 +1,5 @@
 
-import 'package:fiestapp/screens/home/promo_list.dart';
+import 'package:fiestapp/screens/home/promo_new.dart';
 import 'package:fiestapp/screens/home/prueba2.dart';
 import 'package:fiestapp/screens/navigation/profile.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +16,6 @@ class _HomeState extends State<Home> {
 
   final List<Widget> _children = [
     PlaceholderWidget(Colors.black),
-  //  PromoList(),
    Promociones(),
    Profile(),
   ];
@@ -29,9 +28,31 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+
+
+    void _showSettingsPanel(){
+           showModalBottomSheet(
+             context: context, 
+             builder: (context) {
+               return Container(
+                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+                 child: NewPromo(),
+               );
+             }
+             );
+        }
+
     return Scaffold(
      appBar: AppBar(
        title: Text('Fiestaap'),
+       elevation: 0,
+       actions: <Widget>[
+         FlatButton.icon(
+           onPressed: () => _showSettingsPanel(), 
+           icon: Icon(Icons.person), 
+           label: Text('Nueva promo')
+           ),
+       ],
      ),
      body: _children[_currentIndex],
      bottomNavigationBar: BottomNavigationBar(

@@ -9,6 +9,8 @@ class DatabaseService{
   // Collection reference
   final CollectionReference promosCollection = Firestore.instance.collection('promos');
 
+  
+
   // Brew list from Snapshot
   List<Promo> _promoListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
