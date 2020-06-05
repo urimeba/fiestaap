@@ -14,7 +14,7 @@ class NewEvent extends StatefulWidget {
 class _NewEventState extends State<NewEvent> {
 
   final _formKey = GlobalKey<FormState>();
-  final DatabaseService databaseService = DatabaseService(uid: 'E6ZqOzGbl9ZHClRiOW8qOtgFCc13');
+  final DatabaseService databaseService = DatabaseService();
   final AuthService _auth = AuthService();
     // Form values
   int _monto;
