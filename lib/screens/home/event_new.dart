@@ -73,7 +73,7 @@ class _NewEventState extends State<NewEvent> {
                         onPressed: () async {
                           if(_formKey.currentState.validate()){
 
-                            final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
+                            // final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
 
                             final actualUser = await _auth.getUidUser();
 
@@ -84,13 +84,14 @@ class _NewEventState extends State<NewEvent> {
                               }
                             };
 
-                                await eventsCollection
-                                  .add({
+                                await Firestore.instance.collection('eventos').document('$_code')
+                                .setData({
                                     'dueno': actualUser.uid,
                                     'monto': _monto,
                                     'codigo': _code,
                                     'colabs': array
                                   });
+
                                   Navigator.pop(context);
                               }else{
                                 setState(() {

@@ -38,6 +38,7 @@ class _NewEventAlienState extends State<NewEventAlien> {
                         keyboardType: TextInputType.number,
                         decoration: textInputDecoration.copyWith(hintText: 'Código'),
                         validator: (val) => val.length < 1 ? 'El codigo no puede ser nulo' : null,
+                        onChanged: (val) => setState(() => _codigo = num.tryParse(val))
                       ),
                       SizedBox(height: 20),
                       TextFormField(
@@ -66,10 +67,8 @@ class _NewEventAlienState extends State<NewEventAlien> {
                           if(_formKey.currentState.validate()){
 
                             final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
-                            final DocumentReference event =  Firestore.instance.collection('eventos')
-                            .document('BpONI1eiXv9Q2kJ3v5vS');
-                            final Query oneEvent = eventsCollection.where('codigo', isEqualTo: _codigo);
-                            print(oneEvent);
+                            final DocumentReference event =  eventsCollection
+                            .document('$_codigo');
 
                             final actualUser = await _auth.getUidUser();
                             final uid = actualUser.uid;
@@ -79,16 +78,35 @@ class _NewEventAlienState extends State<NewEventAlien> {
                                 'monto': _monto
                             };
 
-                                await event.updateData({
-                                  'colabs.$uid':array,
-                                });
+                            await event.updateData({
+                              'colabs.$uid':array,
+                            });
+
+                            int monto = 0;
+                            await event.get().then<dynamic>((DocumentSnapshot snapshot) async{
+                              var data = snapshot.data;
+                              Map colabs = data['colabs'];
+                              print(colabs);
+                              colabs.forEach((key,value){
+                                int m = value['monto'];
+                                print(m);
+                                monto+=m;
+                              });
+                            });
+                            print(monto);
+                             await event.updateData({
+                              'monto':monto,
+                            });
+
+                            
+                            
 
 
                                 // .add({
                                 //   'colabs': array,
                                 // });
 
-                                  Navigator.pop(context);
+                            Navigator.pop(context);
                               }else{
                                 setState(() {
                                   _error = 'Ocurrio algun error';
