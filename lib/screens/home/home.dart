@@ -1,9 +1,10 @@
 
+import 'package:fiestapp/screens/home/event_new.dart';
 import 'package:fiestapp/screens/home/promo_new.dart';
-import 'package:fiestapp/screens/home/prueba2.dart';
 import 'package:fiestapp/screens/navigation/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:fiestapp/screens/home/promos.dart';
+import 'events.dart';
 
 
 class Home extends StatefulWidget {
@@ -15,9 +16,9 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   final List<Widget> _children = [
-    PlaceholderWidget(Colors.black),
-   Promociones(),
-   Profile(),
+    Eventos(),
+    Promociones(),
+    Profile(),
   ];
 
   void onTabTapped(int index) {
@@ -30,7 +31,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
 
 
-    void _showSettingsPanel(){
+    void _showNewPromo(){
            showModalBottomSheet(
              context: context, 
              builder: (context) {
@@ -41,6 +42,19 @@ class _HomeState extends State<Home> {
              }
              );
         }
+      
+    void _showNewEvent(){
+      showModalBottomSheet(
+             context: context, 
+             builder: (context) {
+               return Container(
+                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+                 child: NewEvent(),
+               );
+             }
+             );
+
+    }
 
     return Scaffold(
      appBar: AppBar(
@@ -48,9 +62,14 @@ class _HomeState extends State<Home> {
        elevation: 0,
        actions: <Widget>[
          FlatButton.icon(
-           onPressed: () => _showSettingsPanel(), 
-           icon: Icon(Icons.person), 
-           label: Text('Nueva promo')
+           onPressed: () => _showNewPromo(), 
+           icon: Icon(Icons.add_circle), 
+           label: Text('Promo')
+           ),
+           FlatButton.icon(
+           onPressed: () => _showNewEvent(), 
+           icon: Icon(Icons.add_circle), 
+           label: Text('Evento')
            ),
        ],
      ),
