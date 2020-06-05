@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:fiestapp/screens/home/promos.dart';
 import 'events.dart';
 
-
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();

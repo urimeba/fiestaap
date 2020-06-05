@@ -1,22 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fiestapp/models/promo.dart';
 import 'package:fiestapp/models/event.dart';
-import 'package:fiestapp/services/auth.dart';
 
 class DatabaseService{
 
   final String uid;
   DatabaseService({this.uid});
 
-  // static AuthService _auth = AuthService();
-  // static dynamic user =  async () => return _auth.getUidUser();
-  // static String id = user.uid;
-
-
   // Collection reference
   final CollectionReference promosCollection = Firestore.instance.collection('promos');
-  final Query eventsCollection = Firestore.instance.collection('eventos')
-  .where('colabs.1Ixs9xxXHAftW385C381x1pOV3F2.id', isEqualTo: '1Ixs9xxXHAftW385C381x1pOV3F2');
+  // final Query eventsCollection = Firestore.instance.collection('eventos')
+  // .where('colabs.$uid.id', isEqualTo: '$uid');
 
   // Brew list from Snapshot
   List<Promo> _promoListFromSnapshot(QuerySnapshot snapshot){
@@ -52,7 +46,8 @@ class DatabaseService{
 
   // Stream of Events
   Stream<List<Event>> get events {
-    return eventsCollection.snapshots()
+    return Firestore.instance.collection('eventos')
+  .where('colabs.$uid.id', isEqualTo: '$uid').snapshots()
     .map(_eventsListFromSnapshot);
   }
 }

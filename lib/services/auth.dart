@@ -19,6 +19,13 @@ class AuthService {
     return lista;
   } 
 
+  getUid() async{
+    FirebaseUser user = await _auth.currentUser();
+    var a = user.uid;
+    // print("$a");
+    return a;
+  }
+
   //Creating an user object based on FireBase User
   User _userFromFirebaseUser(FirebaseUser user){
     return user != null ? User(uid: user.uid) : null;
