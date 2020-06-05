@@ -38,9 +38,9 @@ class _ProfileState extends State<Profile> {
           
 
           FlatButton.icon(
-            onPressed: (){
-              getData();
-              // await _auth.signOut();
+            onPressed: () async{
+              // getData();
+              await _auth.signOut();
             }, 
             icon: Icon(Icons.person), 
             label: Text('Cerrar sesion')

@@ -1,10 +1,12 @@
 class Event{
   final String dueno;
-  final String monto;
+  final int monto;
+  final int codigo;
 
   Event({
       this.dueno,
-      this.monto
+      this.monto,
+      this.codigo
       });
 
 }

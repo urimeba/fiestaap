@@ -2,31 +2,25 @@ import 'package:fiestapp/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fiestapp/services/database.dart';
 import 'package:fiestapp/shared/constants.dart';
-import 'dart:math';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class NewEvent extends StatefulWidget {
+class NewEventAlien extends StatefulWidget {
   @override
-  _NewEventState createState() => _NewEventState();
+  _NewEventAlienState createState() => _NewEventAlienState();
 }
 
-class _NewEventState extends State<NewEvent> {
-
+class _NewEventAlienState extends State<NewEventAlien> {
   final _formKey = GlobalKey<FormState>();
-  final DatabaseService databaseService = DatabaseService(uid: 'E6ZqOzGbl9ZHClRiOW8qOtgFCc13');
+  final DatabaseService databaseService = DatabaseService();
   final AuthService _auth = AuthService();
     // Form values
+  int _codigo;
   int _monto;
-  String _error='';
-
-  var rng = new Random();
+  String _error=''; 
 
   @override
   Widget build(BuildContext context) {
-    var _code = rng.nextInt(900000) + 100000;
-    print('Codigooooo: $_code');
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: 
@@ -36,13 +30,11 @@ class _NewEventState extends State<NewEvent> {
                   child: Column(
                     children: <Widget>[
                       Text(
-                        'Agrega un evento',
+                        'Agrega un evento ajeno',
                         style: TextStyle(fontSize: 18),
                       ),
                       SizedBox(height: 20),
                       TextFormField(
-                        initialValue: '$_code',
-                        enabled: false,
                         keyboardType: TextInputType.number,
                         decoration: textInputDecoration.copyWith(hintText: 'Código'),
                         validator: (val) => val.length < 1 ? 'El codigo no puede ser nulo' : null,
@@ -74,23 +66,28 @@ class _NewEventState extends State<NewEvent> {
                           if(_formKey.currentState.validate()){
 
                             final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
+                            final DocumentReference event =  Firestore.instance.collection('eventos')
+                            .document('BpONI1eiXv9Q2kJ3v5vS');
+                            final Query oneEvent = eventsCollection.where('codigo', isEqualTo: _codigo);
+                            print(oneEvent);
 
                             final actualUser = await _auth.getUidUser();
+                            final uid = actualUser.uid;
 
                             Map array = {
-                              actualUser.uid.toString(): {
                                 'id': actualUser.uid.toString(),
                                 'monto': _monto
-                              }
                             };
 
-                                await eventsCollection
-                                  .add({
-                                    'dueno': actualUser.uid,
-                                    'monto': _monto,
-                                    'codigo': _code,
-                                    'colabs': array
-                                  });
+                                await event.updateData({
+                                  'colabs.$uid':array,
+                                });
+
+
+                                // .add({
+                                //   'colabs': array,
+                                // });
+
                                   Navigator.pop(context);
                               }else{
                                 setState(() {
@@ -106,4 +103,3 @@ class _NewEventState extends State<NewEvent> {
     );
   }
 }
-

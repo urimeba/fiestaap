@@ -1,5 +1,6 @@
 
 import 'package:fiestapp/screens/home/event_new.dart';
+import 'package:fiestapp/screens/home/event_new_alien.dart';
 import 'package:fiestapp/screens/home/promo_new.dart';
 import 'package:fiestapp/screens/navigation/profile.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,18 @@ class _HomeState extends State<Home> {
                );
              }
              );
+    }
 
+    void _showAlienEvent(){
+      showModalBottomSheet(
+             context: context, 
+             builder: (context) {
+               return Container(
+                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
+                 child: NewEventAlien(),
+               );
+             }
+             );
     }
 
     return Scaffold(
@@ -70,6 +82,11 @@ class _HomeState extends State<Home> {
            onPressed: () => _showNewEvent(), 
            icon: Icon(Icons.add_circle), 
            label: Text('Evento')
+           ),
+           FlatButton.icon(
+           onPressed: () => _showAlienEvent(), 
+           icon: Icon(Icons.add_circle), 
+           label: Text('Otro')
            ),
        ],
      ),

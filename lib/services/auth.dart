@@ -4,6 +4,10 @@ import 'package:fiestapp/models/user.dart';
 class AuthService {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<FirebaseUser> getUidUser() async{
+    return _auth.currentUser();
+  }
   
   // Getting the user data
   getDataUser() async {

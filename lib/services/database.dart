@@ -9,7 +9,8 @@ class DatabaseService{
 
   // Collection reference
   final CollectionReference promosCollection = Firestore.instance.collection('promos');
-  final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
+  final Query eventsCollection = Firestore.instance.collection('eventos')
+  .where('colabs.E6ZqOzGbl9ZHClRiOW8qOtgFCc13.id', isEqualTo: 'E6ZqOzGbl9ZHClRiOW8qOtgFCc13');
 
   // Brew list from Snapshot
   List<Promo> _promoListFromSnapshot(QuerySnapshot snapshot){
@@ -32,6 +33,7 @@ class DatabaseService{
       return Event(
         dueno: doc.data['dueno'] ?? 'Dueño',
         monto: doc.data['monto'] ?? 'Monto',
+        codigo: doc.data['codigo'] ?? 000000
       );
     }).toList();
   }
