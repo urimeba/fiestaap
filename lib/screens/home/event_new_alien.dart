@@ -71,16 +71,24 @@ class _NewEventAlienState extends State<NewEventAlien> {
                             var event;
 
                             try{
-                              event =  eventsCollection
+                              
+                            event =  eventsCollection
                             .document('$_codigo');
                             }on Exception catch(exception){
                               print(exception);
+                              setState(() {
+                                  _error = 'Este código no existe';
+                                });
                             }catch(error){
-                              print('Error');
+                              print(error);
                               setState(() {
                                 _error = 'Este codigo no existe';
                               });
                             }
+
+                            
+
+                            try {
 
                             final actualUser = await _auth.getUidUser();
                             final uid = actualUser.uid;
@@ -89,8 +97,6 @@ class _NewEventAlienState extends State<NewEventAlien> {
                                 'id': actualUser.uid.toString(),
                                 'monto': _monto
                             };
-
-                            try {
 
                             await event.updateData({
                               'colabs.$uid':array,
@@ -112,6 +118,7 @@ class _NewEventAlienState extends State<NewEventAlien> {
                               'monto':monto,
                             });
 
+                            Navigator.pop(context);
 
                               } on Exception catch (exception) {
                                 print(exception);
@@ -124,17 +131,6 @@ class _NewEventAlienState extends State<NewEventAlien> {
                                   });
                               }
 
-                            
-
-                            
-                            
-
-
-                                // .add({
-                                //   'colabs': array,
-                                // });
-
-                            Navigator.pop(context);
                               }else{
                                 setState(() {
                                   _error = 'Ocurrio algun error';
