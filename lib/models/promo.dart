@@ -12,7 +12,7 @@ class Promo{
       this.fechaVencimiento,
       this.estado,
       this.costo,
-      this.tienda
+      this.tienda,
       });
 
 }

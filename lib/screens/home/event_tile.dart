@@ -2,6 +2,37 @@ import 'package:fiestapp/models/event.dart';
 import 'package:fiestapp/services/auth.dart';
 import 'package:flutter/material.dart';
 
+// class EventTile extends StatelessWidget {
+//   final Event event;
+
+//   EventTile({ this.event });
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Padding(
+//       padding: EdgeInsets.only(top: 8.0),
+//       child: Card(
+//         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
+//         child: ListTile(
+//           leading: CircleAvatar(
+//             backgroundImage: NetworkImage('https://comps.canstockphoto.com/bottles-of-alcohol-with-tropical-clipart-vector_csp18200753.jpg'),
+//             backgroundColor: Colors.transparent,
+//           ),
+//           title: Text('Dueno: ${event.dueno}'),
+//           subtitle: Text(
+//             'Nombre: ${event.nombre}\nCodigo: ${event.codigo}\nMonto total: \$${event.monto}.00 MXN'
+//             ),
+//           isThreeLine:  true,
+//         ),
+//         ),
+//       );
+//   }
+// }
+
+
+
+
+
 class EventTile extends StatelessWidget {
   final Event event;
   final AuthService _auth = AuthService();
@@ -14,12 +45,11 @@ class EventTile extends StatelessWidget {
 
     Future<String> _getDueno() async{
       var actualUser = await _auth.getUidUser();
-      if(actualUser.uid==event.dueno){
-        _dueno='Tú';
+      if(actualUser.uid==event.uid){
+        return 'Tú';
       }else{
-        _dueno=actualUser.displayName.toString();
+        return event.dueno;
       }
-      return _dueno;
     }
 
     return Padding(
@@ -39,19 +69,19 @@ class EventTile extends StatelessWidget {
 
 
 Widget getEvent(snapshot, event){
-
-  print(event.codigo);
-
       return Card(
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
         child: ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage('http://fasa.co.za/fasablog/wp-content/uploads/2016/07/Walmart-Logo.jpg'),
-            backgroundColor: Colors.transparent,
+          leading: Padding(
+            padding: EdgeInsets.only(top: 8.0),
+            child: CircleAvatar(
+              backgroundImage: NetworkImage('https://comps.canstockphoto.com/bottles-of-alcohol-with-tropical-clipart-vector_csp18200753.jpg'),
+              backgroundColor: Colors.transparent,
+            ),
           ),
-          title: Text(snapshot.data),
+          title: Text('Dueño: ' + snapshot.data),
           subtitle: Text(
-            'Codigo: ${event.codigo}\nMonto: ${event.monto}'
+            'Nombre: ${event.nombre}\nCodigo: ${event.codigo}\nMonto total: \$${event.monto}.00 MXN'
             ),
           isThreeLine:  true,
         ),

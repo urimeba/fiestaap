@@ -67,8 +67,20 @@ class _NewEventAlienState extends State<NewEventAlien> {
                           if(_formKey.currentState.validate()){
 
                             final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
-                            final DocumentReference event =  eventsCollection
+                            // final DocumentReference event =;
+                            var event;
+
+                            try{
+                              event =  eventsCollection
                             .document('$_codigo');
+                            }on Exception catch(exception){
+                              print(exception);
+                            }catch(error){
+                              print('Error');
+                              setState(() {
+                                _error = 'Este codigo no existe';
+                              });
+                            }
 
                             final actualUser = await _auth.getUidUser();
                             final uid = actualUser.uid;
@@ -77,6 +89,8 @@ class _NewEventAlienState extends State<NewEventAlien> {
                                 'id': actualUser.uid.toString(),
                                 'monto': _monto
                             };
+
+                            try {
 
                             await event.updateData({
                               'colabs.$uid':array,
@@ -97,6 +111,20 @@ class _NewEventAlienState extends State<NewEventAlien> {
                              await event.updateData({
                               'monto':monto,
                             });
+
+
+                              } on Exception catch (exception) {
+                                print(exception);
+                                setState(() {
+                                  _error = 'Este código no existe';
+                                });
+                              } catch (error) {
+                                  setState(() {
+                                    _error = 'Ha ocurrido algun error';
+                                  });
+                              }
+
+                            
 
                             
                             

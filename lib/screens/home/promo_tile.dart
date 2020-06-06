@@ -19,7 +19,7 @@ class PromoTile extends StatelessWidget {
           ),
           title: Text(promo.descripcion),
           subtitle: Text(
-            'de ${promo.fechaInicio} hasta ${promo.fechaVencimiento} en ${promo.tienda} por ${promo.costo}'
+            'desde el ${promo.fechaInicio} hasta ${promo.fechaVencimiento} en ${promo.tienda} por \$${promo.costo}'
             ),
           isThreeLine:  true,
           

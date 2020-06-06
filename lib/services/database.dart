@@ -16,10 +16,10 @@ class DatabaseService{
   List<Promo> _promoListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
       return Promo(
-        descripcion: doc.data['descripcion'] ?? '',
-        fechaInicio: doc.data['fechaInicio'] ?? 'Sin definir',
-        fechaVencimiento: doc.data['fechaVencimiento'] ?? 'Sin definir',
-        tienda: doc.data['tienda'] ?? 'tienda desconocida',
+        descripcion: doc.data['descripcion'] ?? 'Sin descripcion',
+        fechaInicio: doc.data['fechaInicio'] ?? 'Sin fecha de inicio',
+        fechaVencimiento: doc.data['fechaVencimiento'] ?? 'Sin fecha de vencimiento',
+        tienda: doc.data['tienda'] ?? 'Tienda desconocida',
         estado: doc.data['estado'] ?? '0',
         costo: doc.data['costo'] ?? '0',
       );
@@ -31,9 +31,11 @@ class DatabaseService{
   List<Event> _eventsListFromSnapshot(QuerySnapshot snapshot){
     return snapshot.documents.map((doc){
       return Event(
-        dueno: doc.data['dueno'] ?? 'Dueño',
-        monto: doc.data['monto'] ?? 'Monto',
-        codigo: doc.data['codigo'] ?? 000000
+        dueno: doc.data['dueno'] ?? 'Sin dueño  ',
+        monto: doc.data['monto'] ?? 000000,
+        codigo: doc.data['codigo'] ?? 000000,
+        nombre: doc.data['nombre'] ?? 'Sin nombre',
+        uid: doc.data['uid'] ?? 'Sin UID'
       );
     }).toList();
   }

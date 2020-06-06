@@ -13,14 +13,30 @@ class NewEvent extends StatefulWidget {
 
 class _NewEventState extends State<NewEvent> {
 
+  // Need: formKey for the form, databaseService to create a new event and authService to
+  // get the actual user
   final _formKey = GlobalKey<FormState>();
   final DatabaseService databaseService = DatabaseService();
   final AuthService _auth = AuthService();
+
     // Form values
   int _monto;
+  String _nombre;
   String _error='';
 
+  // Random for code event
   var rng = new Random();
+
+  String numberValidator(String value) {
+  if(value == null) {
+    return null;
+  }
+  final n = num.tryParse(value);
+  if(n == null) {
+    return '"$value" no es un número válido';
+  }
+  return null;
+}
 
   @override
   Widget build(BuildContext context) {
@@ -40,30 +56,37 @@ class _NewEventState extends State<NewEvent> {
                         style: TextStyle(fontSize: 18),
                       ),
                       SizedBox(height: 20),
+                      Text('Codigo del evento:'),
                       TextFormField(
                         initialValue: '$_code',
                         enabled: false,
                         keyboardType: TextInputType.number,
                         decoration: textInputDecoration.copyWith(hintText: 'Código'),
-                        validator: (val) => val.length < 1 ? 'El codigo no puede ser nulo' : null,
                       ),
                       SizedBox(height: 20),
                       TextFormField(
-                        decoration: textInputDecoration.copyWith(hintText: 'Ingresa tu presupuesto'),
+                        decoration: textInputDecoration.copyWith(hintText: 'Apodo del evento'),
+                        validator: (val) => val.length < 1 ? 'Ingresa el apodo del evento' : null,
+                        onChanged: (val) => setState(() => _nombre = val)
+                      ),
+                      SizedBox(height: 20),
+                      TextFormField(
+                        decoration: textInputDecoration.copyWith(hintText: 'Tu presupuesto'),
                         keyboardType: TextInputType.number,
                         inputFormatters: [WhitelistingTextInputFormatter.digitsOnly],
-                        validator: (val) => val.length < 1 ? 'Ingresa el monto' : null,
+                        // validator: (val) => val < 1 ? 'Ingresa un monto' : null,
+                        validator: numberValidator, 
                         onChanged: (val) => setState(() => _monto = num.tryParse(val))
                       ),
                       SizedBox(height: 10,),
 
 
                       Text(
-                          _error,
-                          style: TextStyle(
-                            color: Colors.red, 
-                            fontSize: 14.0
-                            ),
+                        _error,
+                        style: TextStyle(
+                          color: Colors.red, 
+                          fontSize: 14.0
+                        ),
                       ),
                       
                       
@@ -86,9 +109,11 @@ class _NewEventState extends State<NewEvent> {
 
                                 await Firestore.instance.collection('eventos').document('$_code')
                                 .setData({
-                                    'dueno': actualUser.uid,
+                                    'dueno': actualUser.displayName,
+                                    'uid': actualUser.uid,
                                     'monto': _monto,
                                     'codigo': _code,
+                                    'nombre': _nombre,
                                     'colabs': array
                                   });
 
