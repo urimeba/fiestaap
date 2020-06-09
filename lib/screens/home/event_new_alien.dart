@@ -14,7 +14,8 @@ class _NewEventAlienState extends State<NewEventAlien> {
   final _formKey = GlobalKey<FormState>();
   final DatabaseService databaseService = DatabaseService();
   final AuthService _auth = AuthService();
-    // Form values
+    
+  // Form values
   int _codigo;
   int _monto;
   String _error=''; 
@@ -49,8 +50,6 @@ class _NewEventAlienState extends State<NewEventAlien> {
                         onChanged: (val) => setState(() => _monto = num.tryParse(val))
                       ),
                       SizedBox(height: 10,),
-
-
                       Text(
                           _error,
                           style: TextStyle(
@@ -58,8 +57,6 @@ class _NewEventAlienState extends State<NewEventAlien> {
                             fontSize: 14.0
                             ),
                       ),
-                      
-                      
                       RaisedButton(
                         color: Colors.pink[400],
                         child: Text('Agregar', style: TextStyle(color: Colors.white),),
@@ -70,9 +67,8 @@ class _NewEventAlienState extends State<NewEventAlien> {
                             var event;
 
                             try{
-                              
-                            event =  eventsCollection
-                            .document('$_codigo');
+                              event =  eventsCollection
+                              .document('$_codigo');
                             }on Exception catch(exception){
                               print(exception);
                               setState(() {
@@ -136,7 +132,7 @@ class _NewEventAlienState extends State<NewEventAlien> {
                                 });
                               }
                         }
-                        ),
+                      ),
                     ],
                   )
                 ),
@@ -145,29 +141,3 @@ class _NewEventAlienState extends State<NewEventAlien> {
   }
 }
 
-
-class SnackBarPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: RaisedButton(
-        onPressed: () {
-          final snackBar = SnackBar(
-            content: Text('Yay! A SnackBar!'),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () {
-                // Some code to undo the change.
-              },
-            ),
-          );
-
-          // Find the Scaffold in the widget tree and use
-          // it to show a SnackBar.
-          Scaffold.of(context).showSnackBar(snackBar);
-        },
-        child: Text('Show SnackBar'),
-      ),
-    );
-  }
-}

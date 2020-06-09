@@ -13,7 +13,6 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // padding: EdgeInsets.only(top: 8.0),
       body: FutureBuilder(
         future: _getData(),
         builder: (BuildContext context, AsyncSnapshot snapshot){

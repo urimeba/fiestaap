@@ -56,7 +56,7 @@ class Eventos extends StatelessWidget {
                   ),
 
                   SizedBox(
-                    height: 400,
+                    height: 430,
                     child: EventList()
                   ),
 

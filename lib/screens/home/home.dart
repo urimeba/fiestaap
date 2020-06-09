@@ -1,6 +1,4 @@
 
-import 'package:fiestapp/screens/home/event_new.dart';
-import 'package:fiestapp/screens/home/event_new_alien.dart';
 import 'package:fiestapp/screens/home/promo_new.dart';
 import 'package:fiestapp/screens/navigation/profile.dart';
 import 'package:flutter/material.dart';
