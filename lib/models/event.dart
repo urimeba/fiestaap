@@ -4,13 +4,15 @@ class Event{
   final int codigo;
   final String nombre;
   final String uid;
+  final Map colabs;
 
   Event({
       this.dueno,
       this.monto,
       this.codigo,
       this.nombre,
-      this.uid
+      this.uid,
+      this.colabs
       });
 
 }

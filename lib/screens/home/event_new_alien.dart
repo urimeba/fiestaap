@@ -67,7 +67,6 @@ class _NewEventAlienState extends State<NewEventAlien> {
                           if(_formKey.currentState.validate()){
 
                             final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
-                            // final DocumentReference event =;
                             var event;
 
                             try{
@@ -89,36 +88,36 @@ class _NewEventAlienState extends State<NewEventAlien> {
                             
 
                             try {
+                              final actualUser = await _auth.getUidUser();
+                              final uid = actualUser.uid;
 
-                            final actualUser = await _auth.getUidUser();
-                            final uid = actualUser.uid;
+                              Map array = {
+                                  'id': actualUser.uid.toString(),
+                                  'monto': _monto
+                              };
 
-                            Map array = {
-                                'id': actualUser.uid.toString(),
-                                'monto': _monto
-                            };
-
-                            await event.updateData({
-                              'colabs.$uid':array,
-                            });
-
-                            int monto = 0;
-                            await event.get().then<dynamic>((DocumentSnapshot snapshot) async{
-                              var data = snapshot.data;
-                              Map colabs = data['colabs'];
-                              print(colabs);
-                              colabs.forEach((key,value){
-                                int m = value['monto'];
-                                print(m);
-                                monto+=m;
+                              await event.updateData({
+                                'colabs.$uid':array,
                               });
-                            });
-                            print(monto);
-                             await event.updateData({
-                              'monto':monto,
-                            });
 
-                            Navigator.pop(context);
+                              int monto = 0;
+                              await event.get().then<dynamic>((DocumentSnapshot snapshot) async{
+                                var data = snapshot.data;
+                                Map colabs = data['colabs'];
+                                print(colabs);
+                                colabs.forEach((key,value){
+                                  int m = value['monto'];
+                                  print(m);
+                                  monto+=m;
+                                });
+                              });
+                              print(monto);
+                              await event.updateData({
+                                'monto':monto,
+                              });
+
+
+                              Navigator.pop(context);
 
                               } on Exception catch (exception) {
                                 print(exception);
@@ -133,7 +132,7 @@ class _NewEventAlienState extends State<NewEventAlien> {
 
                               }else{
                                 setState(() {
-                                  _error = 'Ocurrio algun error';
+                                  _error = 'Llena los campos correctamente';
                                 });
                               }
                         }
@@ -141,6 +140,33 @@ class _NewEventAlienState extends State<NewEventAlien> {
                     ],
                   )
                 ),
+      ),
+    );
+  }
+}
+
+
+class SnackBarPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: RaisedButton(
+        onPressed: () {
+          final snackBar = SnackBar(
+            content: Text('Yay! A SnackBar!'),
+            action: SnackBarAction(
+              label: 'Undo',
+              onPressed: () {
+                // Some code to undo the change.
+              },
+            ),
+          );
+
+          // Find the Scaffold in the widget tree and use
+          // it to show a SnackBar.
+          Scaffold.of(context).showSnackBar(snackBar);
+        },
+        child: Text('Show SnackBar'),
       ),
     );
   }

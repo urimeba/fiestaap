@@ -35,7 +35,8 @@ class DatabaseService{
         monto: doc.data['monto'] ?? 000000,
         codigo: doc.data['codigo'] ?? 000000,
         nombre: doc.data['nombre'] ?? 'Sin nombre',
-        uid: doc.data['uid'] ?? 'Sin UID'
+        uid: doc.data['uid'] ?? 'Sin UID',
+        colabs: doc.data['colabs'] ?? {'id':'Sin colabs'}
       );
     }).toList();
   }

@@ -42,31 +42,7 @@ class _HomeState extends State<Home> {
              }
              );
         }
-      
-    void _showNewEvent(){
-      showModalBottomSheet(
-             context: context, 
-             builder: (context) {
-               return Container(
-                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-                 child: NewEvent(),
-               );
-             }
-             );
-    }
-
-    void _showAlienEvent(){
-      showModalBottomSheet(
-             context: context, 
-             builder: (context) {
-               return Container(
-                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
-                 child: NewEventAlien(),
-               );
-             }
-             );
-    }
-
+    
     return Scaffold(
      appBar: AppBar(
        title: Text('Fiestaap'),
@@ -76,16 +52,6 @@ class _HomeState extends State<Home> {
            onPressed: () => _showNewPromo(), 
            icon: Icon(Icons.add_circle), 
            label: Text('Promo')
-           ),
-           FlatButton.icon(
-           onPressed: () => _showNewEvent(), 
-           icon: Icon(Icons.add_circle), 
-           label: Text('Evento')
-           ),
-           FlatButton.icon(
-           onPressed: () => _showAlienEvent(), 
-           icon: Icon(Icons.add_circle), 
-           label: Text('Otro')
            ),
        ],
      ),
