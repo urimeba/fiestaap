@@ -69,78 +69,110 @@ class _SignInPageState extends State<SignInPage> {
                         key: _formKey,
                         child: Column(
                           children: <Widget>[
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(hintText: 'Email'),
-                              validator: (val) => val.isEmpty ? 'Ingresa tu correo' : null,
-                              onChanged: (val){
-                                setState(() => email = val);
-                              },
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                              ),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Correo",
+                                    hintStyle: TextStyle(
+                                      color: Theme.of(context).hintColor,
+                                      fontSize: 16,
+                                    )
+                                ),
+                                validator: (val) => val.isEmpty ? 'Ingresa tu correo' : null,
+                                onChanged: (val){
+                                  setState(() => email = val);
+                                },
+                              ),
                             ),
-                            TextFormField(
-                              decoration: textInputDecoration.copyWith(hintText: 'Contraseña'),
-                              validator: (val) => val.length < 6 ? 'Ingresa tu contraseña de +6 caracteres' : null,
-                              obscureText: true,
-                              onChanged: (val){
-                                setState(() => password = val);
-                              },
+                            Container(
+                              padding: EdgeInsets.all(8.0),
+                              decoration: BoxDecoration(
+                                  border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                              ),
+                              child: TextFormField(
+                                decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Contraseña",
+                                    hintStyle: TextStyle(
+                                      color: Theme.of(context).hintColor,
+                                      fontSize: 16,
+                                    )
+                                ),
+                                validator: (val) => val.length < 6 ? 'Ingresa tu contraseña de +6 caracteres' : null,
+                                obscureText: true,
+                                onChanged: (val){
+                                  setState(() => password = val);
+                                },
+                              ),
                             ),
                             SizedBox(height: 20),
-                            RaisedButton(
-                              child: Text(
-                                'Iniciar sesión',
-                                style: TextStyle(color: Colors.white),
+                            SizedBox(
+                              width: 200,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                color: Theme.of(context).primaryColorLight,
+                                child: Text(
+                                  'Iniciar sesión',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                onPressed: () async{
+                                  if(_formKey.currentState.validate()){
+                                    setState(() => loading = true);
+                                    dynamic result = await _auth.signInWithEmailAndPassword(email, password);
+
+                                    if(result==null){
+                                      setState(() {
+                                        error = 'Usuario o contraseña incorrectos';
+                                        loading = false;
+                                      });
+                                    }
+                                  }
+                                },
                               ),
-                              color: Colors.pink[400],
-                              onPressed: () async{
-
-                                if(_formKey.currentState.validate()){
-                                  setState(() => loading = true);
-                                  dynamic result = await _auth.signInWithEmailAndPassword(email, password);
-
-                                if(result==null){
-                                  setState(() {
-                                    error = 'Usuario o contraseña incorrectos';
-                                    loading = false;
-                                  });
-                                }
-                                }
-
-                                
-
-                              },
                             ),
                             SizedBox(height: 10),
                             Text(
                               error,
                               style: TextStyle(
                                 color: Colors.red,
-                                fontSize: 14
+                                fontSize: 16
                               ),
                             ),
-
                             SizedBox(height: 5),
                             FlatButton.icon(
-                                onPressed: () => widget.toggleView(),
-                                icon: Icon(Icons.person), 
-                                label: Text('No tengo cuenta')
+                              onPressed: () => widget.toggleView(),
+                              icon: Icon(
+                                Icons.person,
+                                color: Theme.of(context).primaryColorLight,
+                              ),
+                              label: Text(
+                                'No tengo cuenta',
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight
                                 ),
-                           
-
+                              )
+                            ),
                           ],
                         ),
                       ),
-
                     ),
                   ],
                 ),
-                ),
+              ),
             ],
-
           ),
         ),
-        
       ),
-      
     );
   }
 }

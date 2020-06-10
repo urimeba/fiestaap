@@ -13,46 +13,84 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: FutureBuilder(
         future: _getData(),
         builder: (BuildContext context, AsyncSnapshot snapshot){
           if(snapshot.connectionState == ConnectionState.done) {
-            return getProfile(snapshot, _auth);
+            return getProfile(context, snapshot, _auth);
           }else{
             return CircularProgressIndicator();
           }
-          })
+      })
     );
   }
 }
 
-Widget getProfile(snapshot, _auth){
-
-  return Column(
-    children: <Widget>[
-          Text("Perfil"),
-          SizedBox(height: 20),
-          Text('Nombre'),
-          SizedBox(height: 20),
-          Text(snapshot.data[0]),
-          SizedBox(height: 20),
-          Text('Email'),
-          SizedBox(height: 20),
-          Text(snapshot.data[1]),
-          
-
-          FlatButton.icon(
-            onPressed: () async{
-              // getData();
-              await _auth.signOut();
-            }, 
-            icon: Icon(Icons.person), 
-            label: Text('Cerrar sesion')
-          ),
-    ]
+Widget getProfile(context, snapshot, _auth){
+  return Center(
+    child: Container(
+      padding: EdgeInsets.all(30),
+      child: Column(
+          children: <Widget>[
+            Text(
+              "Perfil",
+              style: TextStyle(
+                fontSize: 32,
+                color: Theme.of(context).primaryColor
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Nombre',
+              style: TextStyle(
+                  fontSize: 24,
+                  color: Theme.of(context).hintColor
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              snapshot.data[0],
+              style: TextStyle(
+                  fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              'Email',
+              style: TextStyle(
+                  fontSize: 24,
+                  color: Theme.of(context).hintColor
+              ),
+            ),
+            SizedBox(height: 20),
+            Text(
+              snapshot.data[1],
+              style: TextStyle(
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 60),
+            FlatButton.icon(
+                onPressed: () async{
+                  // getData();
+                  await _auth.signOut();
+                },
+                icon: Icon(
+                  Icons.person,
+                  color: Colors.redAccent,
+                ),
+                label: Text(
+                  'Cerrar sesion',
+                  style: TextStyle(
+                    color: Colors.redAccent,
+                  ),
+                )
+            ),
+          ]
+      )
+    )
   );
-  
-
 }
 // class Profile extends StatefulWidget {
 //   @override

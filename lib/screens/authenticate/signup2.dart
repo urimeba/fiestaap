@@ -69,38 +69,90 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: Column(
                         children: <Widget>[
                           SizedBox(height: 10),
-                          TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'Nombre'),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                            ),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Nombre",
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).hintColor,
+                                    fontSize: 16,
+                                  )
+                              ),
                               validator: (val) => val.isEmpty ? 'Ingresa tu nombre' : null ,
                               onChanged: (val){
                                 setState(() => name = val);
                               },
+                            ),
                           ),
-                          SizedBox(height: 20),
-                          TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'Email'),
+                          SizedBox(height: 10),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                            ),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Correo",
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).hintColor,
+                                    fontSize: 16,
+                                  )
+                              ),
                               validator: (val) => val.isEmpty ? 'Ingresa un correo' : null ,
                               onChanged: (val){
                                 setState(() => email = val);
                               },
+                            ),
                           ),
-                          SizedBox(height: 20),
-                          TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'Contraseña'),
+                          SizedBox(height: 10),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                            ),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Contraseña",
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).hintColor,
+                                    fontSize: 16,
+                                  )
+                              ),
                               validator: (val) => val.length < 6  ? 'Ingresa una contraseña de +6 caracteres' : null ,
                               obscureText: true,
                               onChanged: (val){
                                 setState(() => password = val);
                               },
+                            ),
                           ),
-                          SizedBox(height: 20),
-                          TextFormField(
-                            decoration: textInputDecoration.copyWith(hintText: 'Confirmar contraseña'),
+                          SizedBox(height: 10),
+                          Container(
+                            padding: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: Colors.grey[100]))
+                            ),
+                            child: TextFormField(
+                              decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  hintText: "Confirmar contraseña",
+                                  hintStyle: TextStyle(
+                                    color: Theme.of(context).hintColor,
+                                    fontSize: 16,
+                                  )
+                              ),
                               validator: (val) => val.length < 6  ? 'Ingresa una contraseña de +6 caracteres' : null ,
                               obscureText: true,
                               onChanged: (val){
                                 setState(() => password2 = val);
                               },
+                            ),
                           ),
                           SizedBox(height: 5),
                           Text(
@@ -111,65 +163,66 @@ class _SignUpPageState extends State<SignUpPage> {
                                 ),
                           ),
                           SizedBox(height: 5,),
-                          RaisedButton(
-                            color: Colors.pink[400],
-                            onPressed: () async{
-                              if(_formKey.currentState.validate()){
-
-                                if(password==password2){
-                                  setState(() => loading = true);
-
-                                  dynamic result = await _auth.registerWithEmailAndPassword(email, password, name);
-                                  print(result);
-                                  if(result==null){
-                                    setState((){
-                                      error = 'Por favor, ingresa un correo válido';
+                          SizedBox(
+                            width: 200,
+                            child: RaisedButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              color: Theme.of(context).primaryColorLight,
+                              onPressed: () async{
+                                if(_formKey.currentState.validate()){
+                                  if(password==password2){
+                                    setState(() => loading = true);
+                                    dynamic result = await _auth.registerWithEmailAndPassword(email, password, name);
+                                    print(result);
+                                    if(result==null){
+                                      setState((){
+                                        error = 'Por favor, ingresa un correo válido';
+                                        loading = false;
+                                      });
+                                    }
+                                  }else{
+                                    setState(() {
+                                      error = 'Las contraseñas no coinciden';
                                       loading = false;
-                                      }
-                                    );
+                                    });
                                   }
-
-                                }else{
-                                  setState(() {
-                                    error = 'Las contraseñas no coinciden';
-                                    loading = false;
-                                  });
-                                  
                                 }
-
-
-
-                                
-
-                                
-                              }
-                            },
-                            child: Text(
-                              'Registrame',
-                              style: TextStyle(color: Colors.white),
+                              },
+                              child: Text(
+                                'Registrame',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
                               ),
                             ),
-                            SizedBox(height: 1),
-                            
-                            // SizedBox(height: 1),
-                            FlatButton.icon(
-                                onPressed: () => widget.toggleView(),
-                                icon: Icon(Icons.person), 
-                                label: Text('Ya tengo cuenta')
-                                ),
+                          ),
+                          SizedBox(height: 1),
+                          FlatButton.icon(
+                            onPressed: () => widget.toggleView(),
+                            icon: Icon(
+                              Icons.person,
+                              color: Theme.of(context).primaryColorLight,
+                            ),
+                            label: Text(
+                              'Ya tengo cuenta',
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColorLight
+                              ),
+                            )
+                          ),
                         ],
                       ),
                     ),
                   ],
                 ),
-                )
-
+              )
             ],
           ),
         ),
-
       ),
-
     );
   }
 }

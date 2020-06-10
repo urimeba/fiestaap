@@ -2,7 +2,6 @@ import 'package:fiestapp/models/event.dart';
 import 'package:fiestapp/services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fiestapp/shared/constants.dart';
-
 import 'package:fiestapp/services/database.dart';
 import 'package:flutter/services.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +10,6 @@ class EventTile extends StatelessWidget {
   final Event event;
   final AuthService _auth = AuthService();
   var actualUser;
-  
 
   EventTile({ this.event });
 
@@ -37,8 +35,9 @@ class EventTile extends StatelessWidget {
           }else{
             return CircularProgressIndicator();
           }
-          })
-      );
+        }
+      )
+    );
   }
 }
 

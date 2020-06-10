@@ -17,6 +17,7 @@ class _EventListState extends State<EventList> {
       itemCount: events.length,
       itemBuilder: (context, index){
         return EventTile(event: events[index]);
-      });
+      }
+    );
   }
 }

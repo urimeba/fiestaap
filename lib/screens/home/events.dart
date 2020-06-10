@@ -17,6 +17,7 @@ class Eventos extends StatelessWidget {
         context: context, 
         builder: (context) {
           return Container(
+            color: Colors.white,
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
             child: NewEventAlien(),
           );
@@ -29,6 +30,7 @@ class Eventos extends StatelessWidget {
              context: context, 
              builder: (context) {
                return Container(
+                 color: Colors.white,
                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 60),
                  child: NewEvent(),
                );
