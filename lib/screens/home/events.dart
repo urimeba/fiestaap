@@ -55,7 +55,7 @@ class Eventos extends StatelessWidget {
                         child: Text('Únete a un evento ajeno'),
                         onPressed: () => _showAlienEvent(),
                       ),
-                      SizedBox(width: 20),
+                      SizedBox(width: 10),
                       RaisedButton(
                         child: Text('Crea un evento nuevo'),
                         onPressed: () => _showNewEvent(),
@@ -66,7 +66,6 @@ class Eventos extends StatelessWidget {
                     height: 430,
                     child: EventList()
                   ),
-
                 ],
               ),
               // child: EventList(),

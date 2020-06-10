@@ -9,6 +9,6 @@ ThemeData appTheme() {
     dividerColor: Colors.white,
     buttonColor: Colors.white,
     scaffoldBackgroundColor: Colors.black,
-    canvasColor: Colors.black,
+    canvasColor: Colors.white,
   );
 }
