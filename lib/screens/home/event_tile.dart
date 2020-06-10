@@ -31,7 +31,7 @@ class EventTile extends StatelessWidget {
         future: _getDueno(),
         builder: (BuildContext context, AsyncSnapshot snapshot){
           if(snapshot.connectionState == ConnectionState.done) {
-            return getEvent(snapshot, event, actualUser);
+            return getEvent(context, snapshot, event, actualUser);
           }else{
             return CircularProgressIndicator();
           }
@@ -41,7 +41,7 @@ class EventTile extends StatelessWidget {
   }
 }
 
-Widget getEvent(snapshot, event, actualUser){
+Widget getEvent(context, snapshot, event, actualUser){
 
   String uid = actualUser.uid;
   int montoActual = event.colabs[uid]['monto'];
@@ -54,22 +54,32 @@ Widget getEvent(snapshot, event, actualUser){
             child: CircleAvatar(
               backgroundImage: NetworkImage('https://comps.canstockphoto.com/bottles-of-alcohol-with-tropical-clipart-vector_csp18200753.jpg'),
               backgroundColor: Colors.transparent,
-              ),
             ),
-            title: Text('Dueño: ' + snapshot.data),
-            subtitle: Text(
-            'Nombre: ${event.nombre}\nCodigo: ${event.codigo}\nMonto total: \$${event.monto}.00 MXN'
+          ),
+          title: Text(
+            'Dueño: ' + snapshot.data,
+            style: TextStyle(
+              fontSize: 20,
+              color: Theme.of(context).hintColor
             ),
-
-            children: <Widget>[
-                // Text(
-                //   "Tu aportación actual: $montoActual",
-                //   style: TextStyle(fontSize: 18),
-                // ),
-                PForm(monto: montoActual, codigo:event.codigo)
-              ],
+          ),
+          subtitle: Text(
+            'Nombre: ${event.nombre}\nCodigo: ${event.codigo}\nMonto total: \$${event.monto}.00 MXN',
+            style: TextStyle(
+                fontSize: 18,
+                color: Theme.of(context).hintColor
             ),
-        );
+          ),
+          children: <Widget>[
+            // Text(
+            //   "Tu aportación actual: $montoActual",
+            //   style: TextStyle(fontSize: 18),
+            // ),
+            SizedBox(height: 20),
+            PForm(monto: montoActual, codigo:event.codigo)
+          ],
+        ),
+      );
     }
 
 
@@ -99,93 +109,118 @@ class _PFormState extends State<PForm> {
     _codigo = widget.codigo;
     
 
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: <Widget>[
-          Text(
-            'Actualiza tu aportación actual',
-            style: TextStyle(fontSize: 18),
-          ),
-          SizedBox(height: 20),
-          TextFormField(
-            keyboardType: TextInputType.number,
-            initialValue: m.toString(),
-            decoration: textInputDecoration.copyWith(hintText: 'Aportación actual'),
-            validator: (val) => val.length < 1 ? 'El monto no puede ser nulo' : null,
-            onChanged: (val) => setState(() => _monto = num.tryParse(val))
-          ),
-          Text(
+    return SizedBox(
+      width: 350,
+        child: Form(
+        key: _formKey,
+        child: Column(
+          children: <Widget>[
+            Text(
+              'Actualiza tu aportación actual',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 10),
+            Container(
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(color: Colors.grey[100]))
+              ),
+              child: TextFormField(
+                keyboardType: TextInputType.number,
+                initialValue: m.toString(),
+                validator: (val) => val.length < 1 ? 'El monto no puede ser nulo' : null,
+                onChanged: (val) => setState(() => _monto = num.tryParse(val)),
+                decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: "Aportación actual",
+                    hintStyle: TextStyle(
+                      color: Theme.of(context).hintColor,
+                      fontSize: 16,
+                    )
+                ),
+              ),
+            ),
+            Text(
               _error,
               style: TextStyle(
-                color: Colors.red, 
-                fontSize: 14.0
+                  color: Colors.red,
+                  fontSize: 14.0
               ),
-          ),
-          RaisedButton(
-            color: Colors.pink[400],
-            child: Text('Actualizar', style: TextStyle(color: Colors.white),),
-            onPressed: () async{
-              if(_formKey.currentState.validate()){
-                print(_monto);
-                print(_codigo);
+            ),
+            SizedBox(
+              width: 150,
+              child: RaisedButton(
+                  color: Colors.pink[400],
+                  child: Text(
+                    'Actualizar',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16
+                    ),
+                  ),
+                  onPressed: () async{
+                    if(_formKey.currentState.validate()){
+                      print(_monto);
+                      print(_codigo);
 
-                final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
-                var event;
+                      final CollectionReference eventsCollection = Firestore.instance.collection('eventos');
+                      var event;
 
-                try{
-                  event =  eventsCollection
-                  .document('$_codigo');
+                      try{
+                        event =  eventsCollection
+                            .document('$_codigo');
 
-                  final actualUser = await _auth.getUidUser();
-                  final uid = actualUser.uid;
+                        final actualUser = await _auth.getUidUser();
+                        final uid = actualUser.uid;
 
-                  Map array = {
-                      'id': actualUser.uid.toString(),
-                      'monto': _monto
-                  };
+                        Map array = {
+                          'id': actualUser.uid.toString(),
+                          'monto': _monto
+                        };
 
-                  await event.updateData({
-                    'colabs.$uid':array,
-                  });
+                        await event.updateData({
+                          'colabs.$uid':array,
+                        });
 
-                  int monto = 0;
-                  await event.get().then<dynamic>((DocumentSnapshot snapshot) async{
-                    var data = snapshot.data;
-                    Map colabs = data['colabs'];
-                    print(colabs);
-                    colabs.forEach((key,value){
-                      int m = value['monto'];
-                      print(m);
-                      monto+=m;
-                    });
-                  });
-                  print(monto);
-                  await event.updateData({
-                    'monto':monto,
-                  });
+                        int monto = 0;
+                        await event.get().then<dynamic>((DocumentSnapshot snapshot) async{
+                          var data = snapshot.data;
+                          Map colabs = data['colabs'];
+                          print(colabs);
+                          colabs.forEach((key,value){
+                            int m = value['monto'];
+                            print(m);
+                            monto+=m;
+                          });
+                        });
+                        print(monto);
+                        await event.updateData({
+                          'monto':monto,
+                        });
 
-                }on Exception catch(exception){
-                  print(exception);
-                  setState(() {
-                      _error = 'Este código no existe';
-                    });
-                }catch(error){
-                  print(error);
-                  setState(() {
-                    _error = 'Ha ocurrido un error. Intente nuevamente en 5 segundos';
-                  });
-                }
+                      }on Exception catch(exception){
+                        print(exception);
+                        setState(() {
+                          _error = 'Este código no existe';
+                        });
+                      }catch(error){
+                        print(error);
+                        setState(() {
+                          _error = 'Ha ocurrido un error. Intente nuevamente en 5 segundos';
+                        });
+                      }
 
-              }else{
-                setState(() {
-                  _error = 'Complete los campos';
-                });
-              }
-            }
-            )
-        ],
-      ),
+                    }else{
+                      setState(() {
+                        _error = 'Complete los campos';
+                      });
+                    }
+                  }
+              ),
+            ),
+          ],
+        ),
+      )
     );
   }
 }

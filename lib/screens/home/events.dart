@@ -46,17 +46,22 @@ class Eventos extends StatelessWidget {
             body: Container(
               child: Column(
                 children: <Widget>[
-
-                  RaisedButton(
-                    child: Text('Únete a un evento ajeno'),
-                    onPressed: () => _showAlienEvent(), 
+                  SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center, //Center Row contents horizontally,
+                    crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically,
+                    children: <Widget>[
+                      RaisedButton(
+                        child: Text('Únete a un evento ajeno'),
+                        onPressed: () => _showAlienEvent(),
+                      ),
+                      SizedBox(width: 20),
+                      RaisedButton(
+                        child: Text('Crea un evento nuevo'),
+                        onPressed: () => _showNewEvent(),
+                      ),
+                    ],
                   ),
-
-                  RaisedButton(
-                    child: Text('Crea un evento nuevo'),
-                    onPressed: () => _showNewEvent(),
-                  ),
-
                   SizedBox(
                     height: 430,
                     child: EventList()
