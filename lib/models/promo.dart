@@ -14,5 +14,4 @@ class Promo{
       this.costo,
       this.tienda,
       });
-
 }

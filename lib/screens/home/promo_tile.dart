@@ -1,4 +1,5 @@
 import 'package:fiestapp/models/promo.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PromoTile extends StatelessWidget {
@@ -14,7 +15,8 @@ class PromoTile extends StatelessWidget {
         margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
         child: ListTile(
           leading: CircleAvatar(
-            backgroundImage: NetworkImage('http://fasa.co.za/fasablog/wp-content/uploads/2016/07/Walmart-Logo.jpg'),
+//            backgroundImage: NetworkImage('http://fasa.co.za/fasablog/wp-content/uploads/2016/07/Walmart-Logo.jpg'),
+            backgroundImage: AssetImage('assets/img/${promo.tienda}.jpg'),
             backgroundColor: Colors.transparent,
           ),
           title: Text(promo.descripcion),
@@ -22,7 +24,6 @@ class PromoTile extends StatelessWidget {
             'desde el ${promo.fechaInicio} hasta ${promo.fechaVencimiento} en ${promo.tienda} por \$${promo.costo}'
             ),
           isThreeLine:  true,
-          
         ),
         ),
       );
