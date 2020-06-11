@@ -174,7 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 if(_formKey.currentState.validate()){
                                   if(password==password2){
                                     setState(() => loading = true);
-                                    dynamic result = await _auth.registerWithEmailAndPassword(email, password, name);
+                                    dynamic result = await _auth.registerWithEmailAndPassword(email.trim(), password, name.trim());
                                     print(result);
                                     if(result==null){
                                       setState((){

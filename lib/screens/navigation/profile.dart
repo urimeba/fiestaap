@@ -33,6 +33,11 @@ Widget getProfile(context, snapshot, _auth){
       padding: EdgeInsets.all(30),
       child: Column(
           children: <Widget>[
+            CircleAvatar(
+              backgroundImage: NetworkImage('https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png'),
+              backgroundColor: Colors.blueAccent,
+              maxRadius: 60,
+            ),
             Text(
               "Perfil",
               style: TextStyle(
